@@ -1,0 +1,82 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/VM_IP.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "type": "string"
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D1"
+    },
+    "adminUserName": {
+      "type": "string"
+    },
+    "adminPassword": {
+      "type": "securestring"
+    },
+    "networkInterfaceId": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-03-30",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "storageProfile": {
+          "osDisk": {
+            "osType": "Windows",
+            "name": "test-osDisk.e14b6353-3249-4e72-9594-6d6948c736da.vhd",
+            "createOption": "FromImage",
+            "image": {
+              "uri": "https://dmrg4600.blob.core.windows.net/system/Microsoft.Compute/Images/dmrg4600/test-osDisk.e14b6353-3249-4e72-9594-6d6948c736da.vhd"
+            },
+            "vhd": {
+              "uri": "https://dmrg4600.blob.core.windows.net/vmcontainer117c1d89-4f88-4106-b4a2-f6e905d536f6/osDisk.117c1d89-4f88-4106-b4a2-f6e905d536f6.vhd"
+            },
+            "caching": "ReadWrite"
+          },
+          "dataDisks": [
+            {
+              "lun": 0,
+              "name": "test-dataDisk-0.e14b6353-3249-4e72-9594-6d6948c736da.vhd",
+              "createOption": "FromImage",
+              "image": {
+                "uri": "https://dmrg4600.blob.core.windows.net/system/Microsoft.Compute/Images/dmrg4600/test-dataDisk-0.e14b6353-3249-4e72-9594-6d6948c736da.vhd"
+              },
+              "vhd": {
+                "uri": "https://dmrg4600.blob.core.windows.net/vmcontainer117c1d89-4f88-4106-b4a2-f6e905d536f6/dataDisk-0.117c1d89-4f88-4106-b4a2-f6e905d536f6.vhd"
+              },
+              "caching": "ReadOnly"
+            }
+          ]
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[parameters('networkInterfaceId')]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "https://dmrg4600.blob.core.windows.net/"
+          }
+        },
+        "provisioningState": 0
+      },
+      "name": "[parameters('vmName')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "westeurope"
+    }
+  ]
+}
